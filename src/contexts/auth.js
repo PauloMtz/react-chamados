@@ -25,6 +25,40 @@ function AuthProvider({ children }){
 
   }, [])
 
+  // efetua login
+  async function signIn(email, password) {
+    setLoadingAuth(true); // carregando usuário
+
+    await firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(async (value) => {
+        let idUser = value.user.uid;
+
+        // busca no banco o usuário que está em idUser
+        const userProfile = await firebase.firestore().collection('users')
+          .doc(idUser).get();
+        
+        // monta o objeto
+        let data = {
+          uid: idUser,
+          nome: userProfile.data().nome, // vem do banco de dados
+          avatarUrl: userProfile.data().avatarUrl,
+          email: value.user.email, // email que foi passado no login
+        };
+
+        // lança no setUser esse objeto que acabou de ser criado
+        setUser(data);
+
+        // lança no localstorage
+        storageUser(data);
+        setLoadingAuth(false);
+      })
+      .catch((erro) => {
+        alert(erro);
+        setLoadingAuth(false);
+      })
+  }
+
+  // cadastra usuário
   async function signUp(email, password, nome) {
     setLoadingAuth(true); // alguém começou a cadastrar um usuário
 
@@ -78,7 +112,9 @@ function AuthProvider({ children }){
         user, 
         loading, 
         signUp, // disponibiliza para ser acessado em qualquer lugar da aplicação
-        signOut
+        signOut,
+        signIn,
+        loadingAuth
       }}>
       {children}
     </AuthContext.Provider>
