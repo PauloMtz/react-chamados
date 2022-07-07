@@ -1,14 +1,23 @@
 import { useContext } from 'react';
-
 import { AuthContext } from '../../contexts/auth';
+
+import Header from '../../components/Header';
+import Title from '../../components/Title';
+
+import { FiHome } from 'react-icons/fi';
 
 export default function Dashboard(){
   const { signOut } = useContext(AuthContext);
 
   return(
     <div>
-      <h1>PAGINA DASHBOARD</h1>
-      <button onClick={ () => signOut() }>Logout</button>
+      <Header />
+      <div className='content'>
+        <Title name="Dashboard">
+            <FiHome size={25} />
+        </Title>
+        <button onClick={ () => signOut() }>Logout</button>
+      </div>
     </div>
   )
 }
