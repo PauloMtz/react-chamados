@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect } from 'react';
 import firebase from '../services/firebaseConnection';
+import { toast } from 'react-toastify';
 
 export const AuthContext = createContext({});
 
@@ -51,10 +52,12 @@ function AuthProvider({ children }){
         // lança no localstorage
         storageUser(data);
         setLoadingAuth(false);
+        toast.success('Bem vindo de volta!');
       })
       .catch((erro) => {
-        alert(erro);
+        //alert(erro);
         setLoadingAuth(false);
+        toast.error('Não foi possível efetuar login.');
       })
   }
 
@@ -86,11 +89,13 @@ function AuthProvider({ children }){
             // lança no localstorage
             storageUser(data);
             setLoadingAuth(false);
+            toast.success('Seja bem vindo à plataforma!');
           })
       })
       .catch((erro) => {
-        alert(erro);
+        //alert(erro);
         setLoadingAuth(false);
+        toast.error('Ocorre um erro inesperado.');
       })
   }
 
