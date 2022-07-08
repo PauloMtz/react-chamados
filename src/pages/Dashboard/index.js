@@ -16,7 +16,6 @@ export default function Dashboard(){
         <Title name="Dashboard">
             <FiHome size={25} />
         </Title>
-        <button onClick={ () => signOut() }>Logout</button>
       </div>
     </div>
   )
