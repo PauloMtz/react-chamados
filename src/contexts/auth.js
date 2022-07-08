@@ -119,7 +119,9 @@ function AuthProvider({ children }){
         signUp, // disponibiliza para ser acessado em qualquer lugar da aplicação
         signOut,
         signIn,
-        loadingAuth
+        loadingAuth,
+        setUser,
+        storageUser
       }}>
       {children}
     </AuthContext.Provider>

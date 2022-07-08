@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore'; // banco de dados
+import 'firebase/storage'; // para envio de arquivos
 
 // precisa instalar env-cmd -- npm install env-cmd
 
