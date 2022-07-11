@@ -1,4 +1,4 @@
-.container{
+.container {
     display: flex;
     background-color: #f8f8f8;
     border-radius: 5px;
@@ -7,7 +7,7 @@
     margin-bottom: 1em;
 }
   
-.label-avatar{
+.label-avatar {
     width: 280px;
     height: 280px;
     display: flex;
@@ -18,34 +18,34 @@
   
 }
   
-.label-avatar input{
+.label-avatar input {
     display: none;
 }
   
-.label-avatar span{
+.label-avatar span {
     z-index: 99;
     position: absolute;
     opacity: 0.7;
     transition: all .5s;
 }
   
-.label-avatar span:hover{
+.label-avatar span:hover {
     opacity: 1;
     transform: scale(1.4);/* aumenta quando passa o mouse*/
 }
   
-.form-profile img{
+.form-profile img {
     margin-bottom: 1em;
     border-radius: 50%;
     object-fit: cover;
 }
   
-.form-profile label{
+.form-profile label {
     margin-bottom: .5em;
     font-size: 1.4em;
 }
   
-.form-profile input, textarea, selct{
+.form-profile input, textarea, select {
     margin-bottom: 1em;
     padding: .7em;
     border:0;
@@ -53,15 +53,15 @@
     max-width: 600px;
 }
   
-.form-profile input:disabled{
+.form-profile input:disabled {
     cursor: not-allowed;
 }
   
-.form-profile button{
+.form-profile button {
     max-width: 600px;
 }
   
-.logout-btn{
+.logout-btn {
     padding: 8px 20px;
     background-color: transparent;
     border:1px solid #121212;
