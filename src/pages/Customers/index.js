@@ -1,17 +1,41 @@
 import { useState } from 'react';
 import Title from '../../components/Title';
 import Header from '../../components/Header';
+import firebase from '../../services/firebaseConnection';
 
 import { FiUser } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 export default function Customers(){
   const [nomeFantasia, setNomeFantasia] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [endereco, setEndereco] = useState('');
 
-  function handleAdd(e){
+  // cadastrar cliente
+  async function handleAdd(e){
     e.preventDefault();
-    alert('TESTE')
+    
+    if (nomeFantasia !== '' && cnpj !== '' && endereco !== '') {
+      await firebase.firestore().collection('customers')
+        .add({
+          nomeFantasia: nomeFantasia,
+          cnpj: cnpj,
+          endereco: endereco
+        })
+        .then(() => {
+          // se cadastrou, limpa os campos
+          setNomeFantasia('');
+          setCnpj('');
+          setEndereco('');
+          toast.info('Cliente cadastrado com sucesso!');
+        })
+        .catch((erro) => {
+          console.log(erro);
+          toast.error('Erro ao cadastrar cliente.');
+        })
+    } else {
+      toast.error('Preencha os campos corretamente.');
+    }
   }
 
   return(
