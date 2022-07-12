@@ -45,7 +45,7 @@ export default function Dashboard() {
   async function updateState(snapshot) {
     const isCollectionEmpty = snapshot.size === 0;
 
-    if(!isCollectionEmpty){
+    if (!isCollectionEmpty) {
       let lista = [];
 
       snapshot.forEach((doc)=>{
@@ -75,7 +75,35 @@ export default function Dashboard() {
 
   }
 
-  return(
+  async function handleMore() {
+    setLoadingMore(true);
+    await listRef.startAfter(lastDocs).limit(5)
+    .get()
+    .then((snapshot)=>{
+      updateState(snapshot)
+    })
+  }
+
+  if (loading) {
+    return(
+      <div>
+        <Header/>
+
+        <div className="content">
+          <Title name="Atendimentos">
+            <FiMessageSquare size={25} />
+          </Title>  
+
+          <div className="container dashboard">
+            <span>Carregando chamados...</span>
+          </div>
+
+        </div>      
+      </div>
+    )
+  }
+
+  return (
     <div>
       <Header/>
 
@@ -111,24 +139,37 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td data-label="Cliente">Sujeito</td>
-                  <td data-label="Assunto">Suporte</td>
-                  <td data-label="Status">
-                    <span className="badge" style={{backgroundColor: '#5cb85c' }}>Em aberto</span>
-                  </td>
-                  <td data-label="Cadastrado">20/06/2021</td>
-                  <td data-label="#">
-                    <button className="action" style={{backgroundColor: '#3583f6' }}>
-                      <FiSearch color="#FFF" size={17} />
-                    </button>
-                    <button className="action" style={{backgroundColor: '#F6a935' }}>
-                      <FiEdit2 color="#FFF" size={17} />
-                    </button>
-                  </td>
-                </tr>
+                {chamados.map((item, index)=>{
+                  return(
+                    <tr key={index}>
+                      <td data-label="Cliente">{item.cliente}</td>
+                      <td data-label="Assunto">{item.assunto}</td>
+                      <td data-label="Status">
+                        <span className="badge" 
+                          style={{ backgroundColor: item.status === 'Aberto' ? '#5cb85c' : '#999' }}>
+                            {item.status}</span>
+                      </td>
+                      <td data-label="Cadastrado">{item.createdFormated}</td>
+                      <td data-label="#">
+                        <button className="action" style={{backgroundColor: '#3583f6' }}>
+                          <FiSearch color="#FFF" size={17} />
+                        </button>
+                        <button className="action" style={{backgroundColor: '#F6a935' }}>
+                          <FiEdit2 color="#FFF" size={17} />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
+            
+            {loadingMore && 
+              <h3 style={{textAlign: 'center', marginTop: 15 }}>Buscando dados...</h3>}
+
+            { !loadingMore && !isEmpty &&
+              <button className="btn-more" onClick={handleMore}>Buscar mais</button> }
+
           </>
         )}
       </div>
