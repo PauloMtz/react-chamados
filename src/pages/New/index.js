@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-
+import { useHistory } from 'react-router-dom';
 import firebase from '../../services/firebaseConnection';
 
 import Header from '../../components/Header';
@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/auth';
 
 import './style.css';
 import { FiPlusCircle } from 'react-icons/fi'
+import { toast } from 'react-toastify';
 
 export default function New() {
   
@@ -20,6 +21,7 @@ export default function New() {
   const [complemento, setComplemento] = useState('');
 
   const { user } = useContext(AuthContext);
+  const history = useHistory();
 
   useEffect(()=> {
     // carrega os clientes no campo 'select' quando inicia a aplicação
@@ -59,19 +61,36 @@ export default function New() {
 
   }, []);
 
-
-  function handleRegister(e){
+  // cadastra cliente
+  async function handleRegister(e){
     e.preventDefault();
 
-    alert('TESTE')
+    await firebase.firestore().collection('chamados')
+    .add({
+      created: new Date(),
+      cliente: customers[customerSelected].nomeFantasia,
+      clienteId: customers[customerSelected].id,
+      assunto: assunto,
+      status: status,
+      complemento: complemento,
+      userId: user.uid
+    })
+    .then(()=> {
+      toast.success('Chamado criado com sucesso!');
+      setComplemento('');
+      setCustomerSelected(0);
+      history.push('/'); // volta para página inicial
+    })
+    .catch((err)=> {
+      toast.error('Ocorreu um erro, tente mais tarde.')
+      console.log(err);
+    })
   }
-
 
   // quando muda o assunto
   function handleChangeSelect(e){
     setAssunto(e.target.value);
   }
-
 
   // quando muda o status
   function handleOptionChange(e){
