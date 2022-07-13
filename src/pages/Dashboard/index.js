@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns'; // npm install date-fns --save
 
 import firebase from '../../services/firebaseConnection';
+import Modal from '../../components/Modal';
+
 const listRef = firebase.firestore().collection('chamados').orderBy('created', 'desc');
 
 export default function Dashboard() {
@@ -16,6 +18,9 @@ export default function Dashboard() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [lastDocs, setLastDocs] = useState();
+
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [detail, setDetail] = useState();
 
   useEffect(()=> {
     // para parar de mostrar erro no console 
@@ -82,6 +87,11 @@ export default function Dashboard() {
     .then((snapshot)=>{
       updateState(snapshot)
     })
+  }
+
+  function togglePostModal(item){
+    setShowPostModal(!showPostModal) //trocando de true pra false
+    setDetail(item);
   }
 
   if (loading) {
@@ -151,7 +161,8 @@ export default function Dashboard() {
                       </td>
                       <td data-label="Cadastrado">{item.createdFormated}</td>
                       <td data-label="#">
-                        <button className="action" style={{backgroundColor: '#3583f6' }}>
+                        <button className="action" style={{backgroundColor: '#3583f6' }}
+                          onClick={() => togglePostModal(item)}>
                           <FiSearch color="#FFF" size={17} />
                         </button>
                         <button className="action" style={{backgroundColor: '#F6a935' }}>
@@ -173,6 +184,12 @@ export default function Dashboard() {
           </>
         )}
       </div>
+      {showPostModal && (
+        <Modal
+          conteudo={detail}
+          close={togglePostModal}
+        />
+      )}
     </div>
   )
 }
