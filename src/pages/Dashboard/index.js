@@ -165,9 +165,10 @@ export default function Dashboard() {
                           onClick={() => togglePostModal(item)}>
                           <FiSearch color="#FFF" size={17} />
                         </button>
-                        <button className="action" style={{backgroundColor: '#F6a935' }}>
+                        <Link className="action" style={{backgroundColor: '#F6a935' }}
+                          to={`/new/${item.id}`}>
                           <FiEdit2 color="#FFF" size={17} />
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   )
